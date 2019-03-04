@@ -23,8 +23,9 @@ export default class App extends Component {
     this.setState({input: item.target.value})
   }
 
-  handleOnDelete = () => {
-    
+  handleOnDelete = removeItem => {
+    console.log(this.state.todos.filter(item => item !== removeItem))
+    this.setState({todos: this.state.todos.filter(item => item !== removeItem)})
   }
 
   render() {

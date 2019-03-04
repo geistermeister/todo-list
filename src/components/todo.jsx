@@ -15,7 +15,7 @@ export default class ToDo extends Component {
     return(
       <div className={todoContainer}>
         <input type='text' value={this.state.value} onChange={this.handleOnChange} className={todoStyle}></input>
-        <img src='./icons/baseline_delete_black_48dp.png' alt='Add' className={deleteStyle} onClick={this.props.handleOnDelete}></img>
+        <img src='./icons/baseline_delete_black_48dp.png' alt='Add' className={deleteStyle} onClick={ () => this.props.handleOnDelete(this.state.value) }></img>
       </div>
     )
   }
@@ -23,6 +23,9 @@ export default class ToDo extends Component {
 const todoStyle = css`
   height: 30px;
   width: 300px;
+  border-style: solid;
+  border-color: transparent;
+  border-bottom-color: black;
 `
 
 const deleteStyle= css`
