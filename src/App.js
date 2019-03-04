@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ToDo from './components/todo'
+import ToDoList from './components/ToDoList.jsx'
 import {css} from 'emotion'
 
 export default class App extends Component {
@@ -7,10 +7,6 @@ export default class App extends Component {
   state = {
     todos: [],
     input: ''
-  }
-
-  renderToDos = () => {
-    return this.state.todos.map((item, index) => <ToDo key={`key_${index}`} value={item} handleOnDelete={this.handleOnDelete}/>)
   }
 
   handleOnAdd = () => {
@@ -24,19 +20,20 @@ export default class App extends Component {
   }
 
   handleOnDelete = removeItem => {
-    console.log(this.state.todos.filter(item => item !== removeItem))
     this.setState({todos: this.state.todos.filter(item => item !== removeItem)})
   }
 
   render() {
     return (
       <div className={container}>
-        <h1>ToDo-List</h1>
-        {this.renderToDos()}
-        <div className={newToDoContainerStyle}>
-          <input type='text' onChange={this.handleOnChange} className={newToDoStyle}></input>
-          <img src='./icons/baseline_add_circle_outline_black_48dp.png' alt='Add' className={addStyle} onClick={this.handleOnAdd}></img>
-        </div>
+        <div className={todoListContainer}>
+          <h1>ToDo-List</h1>
+          <ToDoList todos={this.state.todos}/>
+          <div className={newToDoContainerStyle}>
+            <input type='text' onChange={this.handleOnChange} className={newToDoStyle}></input>
+            <img src='./icons/baseline_add_circle_outline_black_48dp.png' alt='Add a new ToDo' className={addStyle} onClick={this.handleOnAdd}></img>
+          </div>
+        </div> 
       </div>
     )
   }
@@ -45,8 +42,14 @@ export default class App extends Component {
 const container = css`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   font-family: sans-serif;
+`
+
+const todoListContainer = css`
+  display: flex;
+  flex-direction: column;
+  flex-start: left;
 `
 
 const newToDoContainerStyle = css`
