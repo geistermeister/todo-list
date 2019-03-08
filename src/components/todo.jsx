@@ -14,8 +14,8 @@ export default class ToDo extends Component {
   render() {
     return(
       <div className={todoContainer}>
-        <input type='text' value={this.state.value} onChange={this.handleOnChange} className={todoStyle}></input>
-        <img src='./icons/baseline_delete_black_48dp.png' alt='Add' className={deleteStyle} onClick={ () => this.props.handleOnDelete(this.state.value) }></img>
+        <div type='text' onChange={this.handleOnChange} className={todoStyle}>{this.props.value}</div>
+        <img src='./icons/baseline_delete_black_48dp.png' alt='Add' className={deleteStyle} onClick={() => this.props.handleOnDelete(this.props.id)}></img>
       </div>
     )
   }
@@ -23,14 +23,17 @@ export default class ToDo extends Component {
 const todoStyle = css`
   height: 30px;
   width: 300px;
+  line-height: 30px;
   border-style: solid;
   border-color: transparent;
-  border-bottom-color: black;
+  border-bottom: 2px solid black;
+  user-select: none;
 `
 
 const deleteStyle= css`
   height: 30px;
   width: 30px;
+  margin-left: 5px;
   &:hover {
     cursor: pointer;
   }

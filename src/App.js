@@ -1,26 +1,29 @@
 import React, { Component } from 'react'
-import ToDoList from './components/ToDoList.jsx'
+import ToDo from './components/ToDo.jsx'
 import {css} from 'emotion'
 
 export default class App extends Component {
 
   state = {
     todos: [],
-    input: ''
+    input: '',
+    counter: -1
   }
 
   handleOnAdd = () => {
     if(this.state.input !== ''){
       this.setState({todos: [...this.state.todos, this.state.input]})
+      this.setState({input: ''})
     }
   }
 
   handleOnChange = item => {
     this.setState({input: item.target.value})
   }
+s
+  handleOnDelete = id => {
+    this.setState({todos: this.state.todos.filter((_, index) => id !== index)})
 
-  handleOnDelete = removeItem => {
-    this.setState({todos: this.state.todos.filter(item => item !== removeItem)})
   }
 
   render() {
@@ -28,9 +31,11 @@ export default class App extends Component {
       <div className={container}>
         <div className={todoListContainer}>
           <h1>ToDo-List</h1>
-          <ToDoList todos={this.state.todos}/>
+          {this.state.todos.map((item, index) => 
+            <ToDo key={index} id={index} value={item} handleOnDelete={this.handleOnDelete}/>)
+          }
           <div className={newToDoContainerStyle}>
-            <input type='text' onChange={this.handleOnChange} className={newToDoStyle}></input>
+            <input type='text' onChange={this.handleOnChange} value={this.state.input} className={newToDoStyle}></input>
             <img src='./icons/baseline_add_circle_outline_black_48dp.png' alt='Add a new ToDo' className={addStyle} onClick={this.handleOnAdd}></img>
           </div>
         </div> 
@@ -67,6 +72,7 @@ const newToDoStyle = css`
 const addStyle= css`
   height: 30px;
   width: 30px;
+  margin-left: 5px;
   &:hover {
     cursor: pointer;
   }
