@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
 import ToDo from './components/ToDo.jsx'
 import {css} from 'emotion'
+import './css/reset.css'
 
 export default class App extends Component {
 
   state = {
-    todos: [],
+    todos: [
+      'Einkaufen',
+      'Gassi gehen',
+      'Abwaschen',
+      'Duschen',
+      'Aufräumen'
+  ],
     input: '',
-    counter: -1
+    pageNumber: 1
   }
 
-  handleOncssAdd = () => {
+  handleOnAdd = () => {
     if(this.state.input !== ''){
       this.setState({todos: [...this.state.todos, this.state.input]})
       this.setState({input: ''})
@@ -20,36 +27,77 @@ export default class App extends Component {
   handleOnChange = item => {
     this.setState({input: item.target.value})
   }
-s
+
   handleOnDelete = id => {
     this.setState({todos: this.state.todos.filter((_, index) => id !== index)})
   }
   
+  handleOnNextPage = () => {
+    this.state.pageNumber < (this.state.todos.length / 5) && this.setState({pageNumber: this.state.pageNumber + 1})
+  }
+
+  handleOnPreviousPage = () => {
+    this.state.pageNumber > 1 && this.setState({pageNumber: this.state.pageNumber - 1})
+  }
+
   render() {
     return (
-      <div className={cssContainer}>
+      <>
+      <header className={cssHeader}>
+        <h1>ToDo-List</h1>
+      </header>
+      <div className={cssToDoListContainer}>
         <div>
-          <h1>ToDo-List</h1>
           <div className={cssNewToDoContainer}>
             <input type='text' onChange={this.handleOnChange} value={this.state.input} className={cssNewToDo}></input>
             <div className={cssAddContainer}>
-              <i className={`${cssAdd} material-icons`} onClick={this.handleOncssAdd}>add</i>
+              <i className={`${cssAdd} material-icons`} onClick={this.handleOnAdd}>add</i>
             </div>
           </div>
-          {this.state.todos.map((item, index) => 
-            <ToDo key={index} id={index} value={item} handleOnDelete={this.handleOnDelete}/>)
+          {this.state.todos.length < 6 
+            ?
+            this.state.todos.map((item, index) => 
+              <ToDo key={index} id={index} value={item} handleOnDelete={this.handleOnDelete}/>
+            )
+            :
+            <>
+              {this.state.todos.map((item, index) => {
+                if(index >= ((this.state.pageNumber - 1) * 5) && index < this.state.pageNumber * 5){
+                  return <ToDo key={index} id={index} value={item} handleOnDelete={this.handleOnDelete}/>
+                }
+                return ''
+              })}
+              <div className={cssSwitchContainer}>
+                <i className={`${cssSwitch} material-icons`} onClick={this.handleOnPreviousPage}>keyboard_arrow_left</i>
+                <span className={cssPageNumber}>{this.state.pageNumber}</span>
+                <i className={`${cssSwitch} material-icons`} onClick={this.handleOnNextPage}>keyboard_arrow_right</i>
+              </div>
+            </>
           }
         </div> 
       </div>
+      </>
     )
   }
 }
 
-const cssContainer = css`
+const cssHeader = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80px;
+  font-size: 24px;
+  color: white;
+  background: #158e8e;
+`
+
+const cssToDoListContainer = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: sans-serif;
+  padding-top: 50px;
 `
 
 const cssNewToDoContainer = css`
@@ -83,10 +131,36 @@ const cssAdd = css`
 const cssAddContainer = css`
   display: flex;
   align-itmes: center;
-  border: 2px solid #158e8e;
+  border: 1px solid #158e8e;
   background: #158e8e;
+  user-select: none;
   &:hover {
+    cursor: pointer;
     background: #019e9e;
-    border: 2px solid #019e9e;
   }
+`
+
+const cssSwitchContainer = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  user-select: none;
+`
+
+const cssSwitch = css`
+  line-height: 30px;
+  font-size: 30px;
+  color: #007777;
+  cursor: pointer;
+  &:hover {
+    color: #006060;
+  }
+`
+
+const cssPageNumber = css`
+  font-weight: bold;
+  color: #007777;
+  margin: 0 5px;
 `

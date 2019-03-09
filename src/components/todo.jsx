@@ -39,6 +39,20 @@ export default class ToDo extends Component {
     )
   }
 }
+
+const cssToDoContainer = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+  user-select: none;
+  border-bottom: 1px solid white;
+  background: #158e8e;
+  &:hover {
+    background: #019e9e;
+  }
+`
+
 const cssToDo = css`
   width: 300px;
   padding-left: 5px;
@@ -60,18 +74,4 @@ const cssDelete = css`
 const cssDeleteHide = css`
   font-size: 30px; 
   display: none;
-`
-
-const cssToDoContainer = css`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 5px;
-  user-select: none;
-  border-bottom: 1px solid white;
-  background: #158e8e;
-  &:hover {
-    background: #019e9e;
-  }
-  
 `
