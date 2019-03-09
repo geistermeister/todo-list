@@ -29,7 +29,13 @@ export default class App extends Component {
   }
 
   handleOnDelete = id => {
-    this.setState({todos: this.state.todos.filter((_, index) => id !== index)})
+    this.setState({todos: this.state.todos.filter((_, index) => id !== index)}, this.checkPageNumberNeedReduce)
+  }
+
+  checkPageNumberNeedReduce = () => {
+    if(this.state.pageNumber > 1 && (this.state.todos.length % 5) === 0){
+      this.setState({pageNumber: this.state.pageNumber - 1})
+    }
   }
   
   handleOnNextPage = () => {
