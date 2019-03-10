@@ -19,7 +19,7 @@ export default class App extends Component {
 
   handleOnAdd = () => {
     if(this.state.input !== ''){
-      this.setState({todos: [...this.state.todos, this.state.input]})
+      this.setState({todos: [...this.state.todos, this.state.input]}, this.checkPageNumberNeedIncrease)
       this.setState({input: ''})
     }
   }
@@ -36,6 +36,10 @@ export default class App extends Component {
     if(this.state.pageNumber > 1 && (this.state.todos.length % 5) === 0){
       this.setState({pageNumber: this.state.pageNumber - 1})
     }
+  }
+
+  checkPageNumberNeedIncrease = () => {
+    this.state.pageNumber < (this.state.todos.length / 5) && this.setState({pageNumber: this.state.pageNumber + 1})
   }
   
   handleOnNextPage = () => {
@@ -60,6 +64,11 @@ export default class App extends Component {
               <i className={`${cssAdd} material-icons`} onClick={this.handleOnAdd}>add</i>
             </div>
           </div>
+          <div className={cssSwitchContainer}>
+            <i className={`${cssSwitch} material-icons`} onClick={this.handleOnPreviousPage}>keyboard_arrow_left</i>
+            <span className={cssPageNumber}>{this.state.pageNumber}</span>
+            <i className={`${cssSwitch} material-icons`} onClick={this.handleOnNextPage}>keyboard_arrow_right</i>
+          </div>
           {this.state.todos.length < 6 
             ?
             this.state.todos.map((item, index) => 
@@ -73,11 +82,6 @@ export default class App extends Component {
                 }
                 return ''
               })}
-              <div className={cssSwitchContainer}>
-                <i className={`${cssSwitch} material-icons`} onClick={this.handleOnPreviousPage}>keyboard_arrow_left</i>
-                <span className={cssPageNumber}>{this.state.pageNumber}</span>
-                <i className={`${cssSwitch} material-icons`} onClick={this.handleOnNextPage}>keyboard_arrow_right</i>
-              </div>
             </>
           }
         </div> 
@@ -151,15 +155,15 @@ const cssSwitchContainer = css`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
+  margin-bottom: 10px;
   user-select: none;
 `
 
 const cssSwitch = css`
   line-height: 30px;
   font-size: 30px;
-  color: #007777;
   cursor: pointer;
+  color: #007777;
   &:hover {
     color: #006060;
   }
