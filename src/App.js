@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ToDo from './components/ToDo.jsx'
+import ToDo from './components/todo.jsx'
 import {css} from 'emotion'
 import './css/reset.css'
 
@@ -33,7 +33,7 @@ export default class App extends Component {
   }
 
   checkPageNumberNeedReduce = () => {
-    if(this.state.pageNumber > 1 && (this.state.todos.length % 5) === 0){
+    if((this.state.pageNumber > (this.state.todos.length / 5)) && ((this.state.todos.length % 5) === 0) && (this.state.pageNumber > 1)){
       this.setState({pageNumber: this.state.pageNumber - 1})
     }
   }
@@ -69,21 +69,12 @@ export default class App extends Component {
             <span className={cssPageNumber}>{this.state.pageNumber}</span>
             <i className={`${cssSwitch} material-icons`} onClick={this.handleOnNextPage}>keyboard_arrow_right</i>
           </div>
-          {this.state.todos.length < 6 
-            ?
-            this.state.todos.map((item, index) => 
-              <ToDo key={index} id={index} value={item} handleOnDelete={this.handleOnDelete}/>
-            )
-            :
-            <>
-              {this.state.todos.map((item, index) => {
-                if(index >= ((this.state.pageNumber - 1) * 5) && index < this.state.pageNumber * 5){
-                  return <ToDo key={index} id={index} value={item} handleOnDelete={this.handleOnDelete}/>
-                }
-                return ''
-              })}
-            </>
-          }
+          {this.state.todos.map((item, index) => {
+            if(index >= ((this.state.pageNumber - 1) * 5) && index < this.state.pageNumber * 5){
+              return <ToDo key={index} id={index} value={item} handleOnDelete={this.handleOnDelete}/>
+            }
+            return ''
+          })}
         </div> 
       </div>
       </>
@@ -141,8 +132,8 @@ const cssAdd = css`
 const cssAddContainer = css`
   display: flex;
   align-itmes: center;
-  border: 1px solid #158e8e;
-  background: #158e8e;
+  border: 1px solid #007777;
+  background: #007777;
   user-select: none;
   &:hover {
     cursor: pointer;
